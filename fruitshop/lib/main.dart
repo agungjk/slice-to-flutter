@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,68 +51,297 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  Color _iconColor = Color(0xff585966);
+  var menus = [
+    {
+      "bg": Color(0xffffd875),
+      "name": "Fruits",
+    },
+    {
+      "bg": Color(0xfffff),
+      "name": "Vegetables",
+    },
+    {
+      "bg": Color(0xfffff),
+      "name": "Fruits Juices",
+    },
+    {
+      "bg": Color(0xfffff),
+      "name": "Special Fruits",
+    },
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  var fruits = [
+    {
+      "bg": Color(0xffdfebf8),
+      "name": "Apple",
+      "image": "assets/images/apple.png",
+      "weight": "\$1.50/Kg",
+    },
+    {
+      "bg": Color(0xffe3f1c4),
+      "name": "Banana",
+      "image": "assets/images/banana.png",
+      "weight": "\$1.50/Kg",
+    },
+    {
+      "bg": Color(0xffffe6ce),
+      "name": "Lemon",
+      "image": "assets/images/lemon.png",
+      "weight": "\$1.50/Kg",
+    },
+    {
+      "bg": Color(0xfff8edc5),
+      "name": "Mango",
+      "image": "assets/images/mango.png",
+      "weight": "\$1.50/Kg",
+    },
+    {
+      "bg": Color(0xfffddadc),
+      "name": "Orange",
+      "image": "assets/images/orange.png",
+      "weight": "\$1.50/Kg",
+    },
+    {
+      "bg": Color(0xfff5dff8),
+      "name": "Strawberry",
+      "image": "assets/images/strawberry.png",
+      "weight": "\$1.50/Kg",
+    },
+  ];
+
+  Widget buildAppbar() {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: _iconColor),
+        // onPressed: () => Navigator.of(context).pop(),
+      ),
+      actions: <Widget>[
+        // action button
+        IconButton(
+          icon: Icon(Icons.search, color: _iconColor),
+        ),
+        IconButton(
+          icon: Icon(Icons.shopping_cart, color: _iconColor),
+        ),
+      ],
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+  Widget buildCategories() {
+    return Container(
+      height: 50,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: menus.length,
+        itemBuilder: (BuildContext ctxt, int index) {
+          var item = menus[index];
+
+          return Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+              ),
+              borderRadius: BorderRadius.circular(5),
+              color: item['bg'],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            margin: EdgeInsets.only(top: 5, left: 15, right: 5, bottom: 5),
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(item['name']),
+          );
+        }
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return Padding(
+      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              "Most Popular Items", 
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              "90 Products",
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildGrid(width, height) {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 15,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  crossAxisCount: 2,
+                  childAspectRatio: (width / height),                  
+                ),
+                itemCount: fruits.length,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  var item = fruits[index];
+
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: item['bg'],
+                    ),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: Color(0xffeff7fd),
+                            ),
+                            width: 40,
+                            height: 40,
+                            child: Icon(Icons.favorite_border, color: Color(0xffb6bcb0)),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            item['image'],
+                            width: 70,
+                            height: 70,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
+                              color: Color(0xffeff7fd),
+                            ),
+                            width: 40,
+                            height: 40,
+                            child: Icon(Icons.add, color: Color(0xffb6bcb0)),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 25,
+                          left: 10,
+                          right: 10,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item['name'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text(
+                                  item['weight'],
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      flex: 1,
+    );
+  }
+
+  Widget buildTabbar() {
+    return SizedBox(
+      height: 75,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 15.0,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Icon(Icons.home, color: _iconColor),
+            ),
+            Expanded(
+              child: Icon(Icons.search, color: _iconColor),
+            ),
+            Expanded(
+              child: Icon(Icons.border_all, color: _iconColor),
+            ),
+            Expanded(
+              child: Icon(Icons.people, color: _iconColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
+    /*24 is for notification bar on Android*/
+    final double itemHeight = (size.height - kToolbarHeight - 24) * 0.4;
+    final double itemWidth = size.width / 2;
+
+    return Scaffold(
+      appBar: buildAppbar(),
+      body: Column(
+        children: <Widget>[
+          buildCategories(),
+          buildTitle(),
+          buildGrid(itemWidth, itemHeight),
+          buildTabbar(),
+        ],
+      ),
     );
   }
 }
